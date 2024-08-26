@@ -3,6 +3,7 @@ const { generateUID, writeDataToFile } = require('../ultis/index.js');
 
 const getUsersModel = () => {
 	return new Promise((resolve, reject) => {
+		const isTokenValid = checkToken(data.id, data.token);
 		resolve(users);
 	});
 };
@@ -23,43 +24,54 @@ const addUserModel = (data) => {
 		token: generateUID(),
 	};
 	return new Promise((resolve, reject) => {
-		users.push(newUser);
-		writeDataToFile('./database/userList.json', JSON.stringify(users));
-		resolve(newUser);
-	});
-};
-
-const loginUserModel = (loginData) => {
-	return new Promise((resolve, reject) => {
-		const user = users.find(
-			(user) =>
-				user.email === loginData.email && user.password === loginData.password
-		);
-		if (user) {
-			user.token = generateUID();
+		const isTokenValid = checkToken(data.id, data.token);
+		if (isTokenValid) {
+			users.push(newUser);
 			writeDataToFile('./database/userList.json', JSON.stringify(users));
-			resolve(user);
-		} else {
-			resolve('');
+			resolve(newUser);
 		}
 	});
 };
 
-const logoutUserModel = (logoutData) => {
+const loginUserModel = (data) => {
 	return new Promise((resolve, reject) => {
-		const user = users.find(
-			(user) =>
-				user.email === logoutData.email && user.password === logoutData.password
-		);
-		if (user) {
-			delete user.token;
-			writeDataToFile('./database/userList.json', JSON.stringify(users));
-			resolve(user);
+	  const user = users.find(
+		(user) => user.email === data.email && user.password === data.password
+	  );
+	  if (user) {
+		const isTokenValid = checkToken(user.id, data.token);
+		if (isTokenValid) {
+		  user.token = generateUID();
+		  writeDataToFile('./database/userList.json', JSON.stringify(users));
+		  resolve(user);
 		} else {
-			resolve('');
+		  resolve('');
 		}
+	  } else {
+		resolve('');
+	  }
 	});
 };
+
+const logoutUserModel = (data) => {
+	return new Promise((resolve, reject) => {
+	  const user = users.find(
+		(user) => user.email === data.email && user.password === data.password
+	  );
+	  if (user) {
+		const isTokenValid = checkToken(user.id, data.token);
+		if (isTokenValid) {
+		  delete user.token;
+		  writeDataToFile('./database/userList.json', JSON.stringify(users));
+		  resolve(user);
+		} else {
+		  resolve('');
+		}
+	  } else {
+		resolve('');
+	  }
+	});
+  };
 
 const checkToken = (user_id, token) => {
 	return new Promise((resolve, reject) => {
