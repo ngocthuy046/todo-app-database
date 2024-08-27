@@ -63,6 +63,11 @@ const handleMessage = (message) => {
 			'Content-Type': 'application/json',
 		});
 		response.end(JSON.stringify(message));
+	} else if (message === 'User not found') {
+		response.writeHead(httpStatusCode.NOT_FOUND, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(message));
 	}
 };
 

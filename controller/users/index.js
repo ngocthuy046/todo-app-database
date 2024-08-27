@@ -8,11 +8,10 @@ const {
 const { getBodyDataRequest,
 		checkAuthorizationHeaders,
 		handleMessage,
- } = require('../../ultis/index.js');
+} = require('../../ultis/index.js');
 const { httpStatusCode } = require('../../constants.js');
 
 const getUsers = async (request, response) => {
-	const token = checkAuthorizationHeaders(request);
 	const users = await getUsersModel()
 	response.writeHead(httpStatusCode.OK, {
 		'Content-Type': 'application/json',
@@ -20,13 +19,12 @@ const getUsers = async (request, response) => {
 	response.end(JSON.stringify(users));
 }
 const addUser = async (request, response) => {
-	const token = checkAuthorizationHeaders(request)
 	const body = await getBodyDataRequest(request);
 	let data = {
 		...body,
 		token: token,
 	};
-	const message = await addUser(data);
+	const message = await addUserModel(data);
 	handleMessage(message);
 }
 function updateUsers(request, response) {
@@ -36,7 +34,6 @@ function deleteUsers(request, response) {
 	response.end(JSON.stringify({ message: 'Delete User Succesfully' }));
 }
 const loginUser = async (request, response) => {
-	const token = checkAuthorizationHeaders(request);
 	const body = await getBodyDataRequest(request);
 	let data = {
 	  ...body,
@@ -46,7 +43,6 @@ const loginUser = async (request, response) => {
 	handleMessage(message);
 };
 const logoutUser = async (request, response) => {
-	const token = checkAuthorizationHeaders(request);
 	const body = await getBodyDataRequest(request);
 	let data = {
 	  ...body,

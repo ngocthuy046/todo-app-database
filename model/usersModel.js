@@ -3,7 +3,6 @@ const { generateUID, writeDataToFile } = require('../ultis/index.js');
 
 const getUsersModel = () => {
 	return new Promise((resolve, reject) => {
-		const isTokenValid = checkToken(data.id, data.token);
 		resolve(users);
 	});
 };
@@ -24,12 +23,9 @@ const addUserModel = (data) => {
 		token: generateUID(),
 	};
 	return new Promise((resolve, reject) => {
-		const isTokenValid = checkToken(data.id, data.token);
-		if (isTokenValid) {
-			users.push(newUser);
-			writeDataToFile('./database/userList.json', JSON.stringify(users));
-			resolve(newUser);
-		}
+		users.push(newUser);
+		writeDataToFile('./database/userList.json', JSON.stringify(users));
+		resolve(newUser);
 	});
 };
 
@@ -39,16 +35,13 @@ const loginUserModel = (data) => {
 		(user) => user.email === data.email && user.password === data.password
 	  );
 	  if (user) {
-		const isTokenValid = checkToken(user.id, data.token);
-		if (isTokenValid) {
-		  user.token = generateUID();
-		  writeDataToFile('./database/userList.json', JSON.stringify(users));
-		  resolve(user);
-		} else {
-		  resolve('');
-		}
+		user.token = generateUID();
+		writeDataToFile('./database/userList.json', JSON.stringify(users));
+		message = 'Success';
+		resolve(message);
 	  } else {
-		resolve('');
+		message = 'User not found';
+		resolve(message);
 	  }
 	});
 };
@@ -59,16 +52,13 @@ const logoutUserModel = (data) => {
 		(user) => user.email === data.email && user.password === data.password
 	  );
 	  if (user) {
-		const isTokenValid = checkToken(user.id, data.token);
-		if (isTokenValid) {
-		  delete user.token;
-		  writeDataToFile('./database/userList.json', JSON.stringify(users));
-		  resolve(user);
-		} else {
-		  resolve('');
-		}
+		delete user.token;
+		writeDataToFile('./database/userList.json', JSON.stringify(users));
+		message = 'Success';
+		resolve(message);
 	  } else {
-		resolve('');
+		message = 'User not found';
+		resolve(message);
 	  }
 	});
   };
