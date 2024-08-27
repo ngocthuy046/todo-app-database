@@ -37,7 +37,7 @@ const loginUserModel = (data) => {
 	  if (user) {
 		user.token = generateUID();
 		writeDataToFile('./database/userList.json', JSON.stringify(users));
-		message = 'Success';
+		message ={ user: user, token: generateUID() }
 		resolve(message);
 	  } else {
 		message = 'User not found';

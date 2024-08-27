@@ -21,8 +21,7 @@ const getUsers = async (request, response) => {
 const addUser = async (request, response) => {
 	const body = await getBodyDataRequest(request);
 	let data = {
-		...body,
-		token: token,
+		...body
 	};
 	const message = await addUserModel(data);
 	handleMessage(message);
@@ -36,8 +35,7 @@ function deleteUsers(request, response) {
 const loginUser = async (request, response) => {
 	const body = await getBodyDataRequest(request);
 	let data = {
-	  ...body,
-	  token: token,
+	  ...body
 	};
 	const message = await loginUserModel(data);
 	handleMessage(message);
@@ -45,8 +43,7 @@ const loginUser = async (request, response) => {
 const logoutUser = async (request, response) => {
 	const body = await getBodyDataRequest(request);
 	let data = {
-	  ...body,
-	  token: token,
+	  ...body
 	};
 	const message = await logoutUserModel(data);
 	handleMessage(message);
