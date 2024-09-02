@@ -67,10 +67,10 @@ function checkToken(user_id, token) {
 			(user) => user.id === user_id && user?.token === token
 		);
 		if (user) {
-			message = 'token is valid';
+			message = 'Token is valid';
 			resolve(message);
 		} else {
-			message = 'token is not valid';
+			message = 'Token is not valid';
 			resolve(message);
 		}
 	});

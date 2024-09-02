@@ -18,7 +18,7 @@ async function addUser(request, response) {
 
 async function checkTokenIsValid(request, response) {
 	const body = await getDataFromRequest(request);
-	const message = await checkToken(body);
+	const message = await checkToken(body.user_id, body.token);
 	handleMessage(message, response);
 }
 

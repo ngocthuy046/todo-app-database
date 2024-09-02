@@ -1,16 +1,20 @@
 let tasks = require('../../database/todoTask.json');
 const { generateUID, writeDataToFile } = require('../ultis/index.js');
 function addNewTaskModel(data) {
-	const newTask = {
-		id: generateUID(),
-		name: data.name,
-		user_id: data.user_id,
-		completed: data.completed,
-	};
 	return new Promise((resolve, reject) => {
-		tasks.unshift(newTask);
-		writeDataToFile('./database/todoTask.json', JSON.stringify(tasks));
-		resolve('Add task success');
+		if (data.name && data.user_id && data.completed) {
+			const newTask = {
+				id: generateUID(),
+				name: data.name,
+				user_id: data.user_id,
+				completed: data.completed,
+			};
+			tasks.unshift(newTask);
+			writeDataToFile('./database/todoTask.json', JSON.stringify(tasks));
+			resolve('Add task success');
+		} else {
+			resolve('Data is missing');
+		}
 	});
 }
 

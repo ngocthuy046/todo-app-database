@@ -39,6 +39,11 @@ function handleMessage(message, response) {
 			'Content-Type': 'application/json',
 		});
 		response.end(JSON.stringify(message));
+	} else if (message === 'Token is valid') {
+		response.writeHead(httpStatusCode.OK, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(message));
 	} else if (message === 'Token is not valid') {
 		response.writeHead(httpStatusCode.UNAUTHORIZED, {
 			'Content-Type': 'application/json',
@@ -46,6 +51,11 @@ function handleMessage(message, response) {
 		response.end(JSON.stringify(message));
 	} else if (message === 'Task not found') {
 		response.writeHead(httpStatusCode.NOT_FOUND, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(message));
+	} else if (message === 'Add task success') {
+		response.writeHead(httpStatusCode.CREATED, {
 			'Content-Type': 'application/json',
 		});
 		response.end(JSON.stringify(message));
@@ -70,6 +80,11 @@ function handleMessage(message, response) {
 		});
 		response.end(JSON.stringify(message));
 	} else if (message === 'User not found') {
+		response.writeHead(httpStatusCode.NOT_FOUND, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(message));
+	} else if (message === 'Data is missing') {
 		response.writeHead(httpStatusCode.NOT_FOUND, {
 			'Content-Type': 'application/json',
 		});

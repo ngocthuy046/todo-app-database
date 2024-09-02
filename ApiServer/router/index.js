@@ -1,10 +1,10 @@
 var userRouter = require('./userRouter');
 var taskRouter = require('./taskRouter');
-var router = {
-	run: function (req, res) {
-		userRouter.run(req, res);
-		taskRouter.run(req, res);
+var router = Object.freeze({
+	run: function (request, response) {
+		userRouter.run(request, response);
+		taskRouter.run(request, response);
 	},
-};
+});
 
 module.exports = router;

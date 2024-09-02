@@ -9,19 +9,24 @@ const {
 	editTask,
 	toggleTask,
 } = require('../../controller/tasks/index.js');
-var taskRouter = {
-	run(req, res) {
-		routerMethods.get(req, res, routes.task.value, getTasks);
-		routerMethods.post(req, res, routes.task.value, addTask);
-		routerMethods.delete(req, res, routes.task.value, deleteTask);
+let taskRouter = {
+	run(request, response) {
+		routerMethods.get(request, response, routes.task.value, getTasks);
+		routerMethods.post(request, response, routes.task.value, addTask);
+		routerMethods.delete(request, response, routes.task.value, deleteTask);
 		routerMethods.delete(
-			req,
-			res,
+			request,
+			response,
 			routes.task.deleteAllTasks.value,
 			deleteAllTasks
 		);
-		routerMethods.put(req, res, routes.task.value, editTask);
-		routerMethods.put(req, res, routes.task.toggleTask.value, toggleTask);
+		routerMethods.put(request, response, routes.task.value, editTask);
+		routerMethods.put(
+			request,
+			response,
+			routes.task.toggleTask.value,
+			toggleTask
+		);
 	},
 };
 module.exports = taskRouter;
