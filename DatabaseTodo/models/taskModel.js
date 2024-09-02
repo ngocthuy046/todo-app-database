@@ -1,4 +1,4 @@
-let tasks = require('../database/todoTask.json');
+let tasks = require('../../database/todoTask.json');
 const { generateUID, writeDataToFile } = require('../ultis/index.js');
 function addNewTaskModel(data) {
 	const newTask = {
