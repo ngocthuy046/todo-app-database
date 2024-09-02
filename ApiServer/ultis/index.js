@@ -1,15 +1,11 @@
-const fs = require('fs');
-const writeDataToFile = (fileName, data) => {
-	fs.writeFileSync(fileName, data, 'utf-8', (error) => console.log(error));
-};
-
-const getDataFromRequest = (req) => {
+const { httpStatusCode } = require('../constants');
+const getDataFromRequest = (request) => {
 	return new Promise((resolve, reject) => {
 		let body = '';
-		req.on('data', (chunk) => {
+		request.on('data', (chunk) => {
 			body += chunk.toString();
 		});
-		req.on('end', () => {
+		request.on('end', () => {
 			resolve(JSON.parse(body));
 		});
 	});
@@ -61,16 +57,32 @@ function handleMessage(message, response) {
 			'Content-Type': 'application/json',
 		});
 		response.end(JSON.stringify(message));
+	} else if (message === 'Add task success') {
+		response.writeHead(httpStatusCode.CREATED, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(message));
 	}
 }
 
 const generateUID = () => {
 	return Date.now().toString(36) + Math.random().toString(36).substring(2, 11);
 };
+function checkAuthorizationHeaders(request) {
+	const token = request.headers['authorization'];
+	if (!token) {
+		response.writeHead(httpStatusCode.UNAUTHORIZED, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify({ message: 'NO TOKENNNNNN' }));
+	} else {
+		return token;
+	}
+}
 
 module.exports = {
 	getDataFromRequest,
 	generateUID,
-	writeDataToFile,
 	handleMessage,
+	checkAuthorizationHeaders,
 };

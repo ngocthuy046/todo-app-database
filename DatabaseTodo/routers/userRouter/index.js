@@ -28,7 +28,7 @@ let userRouter = {
 		routerMethods.post(
 			request,
 			response,
-			routes.user.checkToken,
+			routes.user.checkToken.value,
 			checkTokenIsValid
 		);
 	},

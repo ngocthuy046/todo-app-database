@@ -1,4 +1,4 @@
-const { getDataFromRequest } = require('../../ultis/index.js');
+const { getDataFromRequest, handleMessage } = require('../../ultis/index.js');
 const { httpStatusCode, urlAPI } = require('../../constants.js');
 
 async function getUsers(request, response) {
@@ -22,32 +22,28 @@ async function addUser(request, response) {
 	}
 }
 
-function updateUsers(req, res) {
-	res.end('Update User Succesfully');
-}
-function deleteUsers(req, res) {
-	res.end(JSON.stringify({ message: 'Delete User Succesfully' }));
-}
-const loginUser = async (request, response) => {
+async function loginUser(request, response) {
 	const body = await getDataFromRequest(request);
+	let message = '';
 	const result = await fetch(`${urlAPI}/api/users/login`, {
 		method: 'POST',
 		body: JSON.stringify(body),
 	});
-	if (!result.ok) {
-		throw new Error('Network result was not ok');
-	} else {
+	if (result.ok) {
 		response.writeHead(httpStatusCode.OK, {
 			'Content-Type': 'application/json',
 		});
 		response.end(JSON.stringify(await result.json()));
+	} else {
+		message = 'User not found';
+		handleMessage(message, response);
 	}
-};
+}
 
 const logoutUser = async (request, response) => {
 	const body = await getDataFromRequest(request);
 	const result = await fetch(`${urlAPI}/api/users/logout`, {
-		method: 'POST',
+		method: 'DELETE',
 		body: JSON.stringify(body),
 	});
 	if (!result.ok) {
@@ -63,8 +59,6 @@ const logoutUser = async (request, response) => {
 module.exports = {
 	getUsers,
 	addUser,
-	updateUsers,
-	deleteUsers,
 	loginUser,
 	logoutUser,
 };

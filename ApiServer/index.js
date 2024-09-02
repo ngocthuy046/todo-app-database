@@ -4,7 +4,7 @@ const port = 3000;
 
 const server = createServer((request, response) => {
 	// Config cors to allow fetch data from front to back
-	response.setHeader('Access-Control-Allow-Origin', 'http://127.0.0.1:5500'); // Replace with specific origin if needed
+	response.setHeader('Access-Control-Allow-Origin', '*'); // Replace with specific origin if needed
 	response.setHeader('Access-Control-Request-Method', '*');
 	response.setHeader(
 		'Access-Control-Allow-Methods',

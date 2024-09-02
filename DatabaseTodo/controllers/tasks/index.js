@@ -18,10 +18,17 @@ async function addTask(request, response) {
 async function getAllTasks(request, response) {
 	const body = await getDataFromRequest(request);
 	const taskList = await getAllTasksModel(body);
-	response.writeHead(httpStatusCode.OK, {
-		'Content-Type': 'application/json',
-	});
-	response.end(JSON.stringify(taskList));
+	if (taskList) {
+		response.writeHead(httpStatusCode.OK, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(taskList));
+	} else {
+		response.writeHead(httpStatusCode.NOT_FOUND, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify('Error'));
+	}
 }
 
 async function deleteTask(request, response) {

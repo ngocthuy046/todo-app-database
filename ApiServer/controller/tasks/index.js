@@ -1,16 +1,20 @@
-const { getDataFromRequest, handleMessage } = require('../../ultis/index.js');
+const {
+	getDataFromRequest,
+	handleMessage,
+	checkAuthorizationHeaders,
+} = require('../../ultis/index.js');
 const { httpStatusCode, urlAPI } = require('../../constants.js');
 const { METHODS } = require('../../constants');
 // Fixed to integrate with node DBserver
 async function addTask(request, response) {
 	const body = await getDataFromRequest(request);
 	const token = checkAuthorizationHeaders(request);
-	let message;
+	let message = '';
 	let dataToCheckToken = {
 		user_id: body.user_id,
 		token: token,
 	};
-	const tokenIsValid = await fetch(`${urlAPI}'/api/users/check-token'`, {
+	const tokenIsValid = await fetch(`${urlAPI}/api/users/check-token`, {
 		method: METHODS.POST,
 		body: JSON.stringify(dataToCheckToken),
 	});
@@ -19,30 +23,41 @@ async function addTask(request, response) {
 			method: METHODS.POST,
 			body: JSON.stringify(body),
 		});
-		message = await result.text();
+		message = JSON.parse(await result.text());
 		handleMessage(message, response);
+	} else {
+		message = JSON.parse(await result.text());
+		handleMessage(message, response);
+	}
+}
+
+async function getAllTasks(request, response) {
+	const body = await getDataFromRequest(request);
+	const token = checkAuthorizationHeaders(request);
+	let message;
+	let dataToCheckToken = {
+		user_id: body.user_id,
+		token: token,
+	};
+	const tokenIsValid = await fetch(`${urlAPI}/api/users/check-token`, {
+		method: METHODS.POST,
+		body: JSON.stringify(dataToCheckToken),
+	});
+	if (tokenIsValid.ok) {
+		const result = await fetch(`${urlAPI}/api/tasks/get-all-tasks`, {
+			method: METHODS.POST,
+			body: JSON.stringify(body),
+		});
+		message = JSON.parse(await result.text());
+		console.log(message);
+		// handleMessage(message, response);
 	} else {
 		message = await tokenIsValid.text();
-		handleMessage(message, response);
+		console.log(message);
+		// handleMessage(message, response);
 	}
 }
-// getTasks: not fix | remember change to getAllTasks
-async function getTasks(request, response) {
-	const result = await fetch(`${urlAPI}/api/tasks`, {
-		method: 'GET',
-		headers: {
-			Authorization: JSON.stringify(request.headers['authorization']),
-		},
-	});
-	if (!result.ok) {
-		throw new Error('Network result was not ok');
-	} else {
-		response.writeHead(httpStatusCode.ACCEPTED, {
-			'Content-Type': 'application/json',
-		});
-		response.end(JSON.stringify(await result.json()));
-	}
-}
+
 // deleteTask: not fix
 async function deleteTask(request, response) {
 	const body = await getDataFromRequest(request);
@@ -81,48 +96,60 @@ async function deleteAllTasks(request, response) {
 		response.end(JSON.stringify(await result.json()));
 	}
 }
-// editTask: not fix
+
 async function editTask(request, response) {
 	const body = await getDataFromRequest(request);
-	const result = await fetch(`${urlAPI}/api/tasks`, {
-		method: 'PUT',
-		headers: {
-			Authorization: JSON.stringify(request.headers['authorization']),
-		},
-		body: JSON.stringify(body),
+	const token = checkAuthorizationHeaders(request);
+	let message;
+	let dataToCheckToken = {
+		user_id: body.user_id,
+		token: token,
+	};
+	const tokenIsValid = await fetch(`${urlAPI}'/api/users/check-token'`, {
+		method: METHODS.POST,
+		body: JSON.stringify(dataToCheckToken),
 	});
-	if (!result.ok) {
-		throw new Error('Network result was not ok');
-	} else {
-		response.writeHead(httpStatusCode.OK, {
-			'Content-Type': 'application/json',
+	if (tokenIsValid.ok) {
+		const result = await fetch(`${urlAPI}/api/tasks`, {
+			method: METHODS.PUT,
+			body: JSON.stringify(body),
 		});
-		response.end(JSON.stringify(await result.json()));
+		message = await result.text();
+		handleMessage(message, response);
+	} else {
+		message = await tokenIsValid.text();
+		handleMessage(message, response);
 	}
 }
-// toggleTask: not fix
+
 async function toggleTask(request, response) {
 	const body = await getDataFromRequest(request);
-	const result = await fetch(`${urlAPI}/api/tasks/toggle-task`, {
-		method: 'PUT',
-		headers: {
-			Authorization: JSON.stringify(request.headers['authorization']),
-		},
-		body: JSON.stringify(body),
+	const token = checkAuthorizationHeaders(request);
+	let message;
+	let dataToCheckToken = {
+		user_id: body.user_id,
+		token: token,
+	};
+	const tokenIsValid = await fetch(`${urlAPI}'/api/users/check-token'`, {
+		method: METHODS.POST,
+		body: JSON.stringify(dataToCheckToken),
 	});
-	if (!result.ok) {
-		throw new Error('Network result was not ok');
-	} else {
-		response.writeHead(httpStatusCode.OK, {
-			'Content-Type': 'application/json',
+	if (tokenIsValid.ok) {
+		const result = await fetch(`${urlAPI}/api/tasks/toggle-task`, {
+			method: METHODS.PUT,
+			body: JSON.stringify(body),
 		});
-		response.end(JSON.stringify(await result.json()));
+		message = await result.text();
+		handleMessage(message, response);
+	} else {
+		message = await tokenIsValid.text();
+		handleMessage(message, response);
 	}
 }
 
 module.exports = {
 	addTask,
-	getTasks,
+	getAllTasks,
 	deleteTask,
 	editTask,
 	toggleTask,

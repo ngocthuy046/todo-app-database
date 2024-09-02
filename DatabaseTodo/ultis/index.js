@@ -8,10 +8,10 @@ function writeDataToFile(fileName, data) {
 function getDataFromRequest(request) {
 	return new Promise((resolve, reject) => {
 		let body = '';
-		req.on('data', (chunk) => {
+		request.on('data', (chunk) => {
 			body += chunk.toString();
 		});
-		req.on('end', () => {
+		request.on('end', () => {
 			resolve(JSON.parse(body));
 		});
 	});

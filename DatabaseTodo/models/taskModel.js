@@ -1,4 +1,4 @@
-let tasks = require('../../database/todoTask.json');
+let tasks = require('../database/todoTask.json');
 const { generateUID, writeDataToFile } = require('../ultis/index.js');
 function addNewTaskModel(data) {
 	return new Promise((resolve, reject) => {
@@ -21,7 +21,11 @@ function addNewTaskModel(data) {
 function getAllTasksModel(data) {
 	return new Promise((resolve, reject) => {
 		const taskList = tasks.filter((task) => task.user_id === data.user_id);
-		resolve(taskList);
+		if (taskList) {
+			resolve(taskList);
+		} else {
+			resolve('');
+		}
 	});
 }
 

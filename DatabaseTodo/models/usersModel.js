@@ -1,4 +1,4 @@
-let users = require('../../database/userList.json');
+let users = require('../database/userList.json');
 const { generateUID, writeDataToFile } = require('../ultis/index.js');
 
 function getUsersModel() {
