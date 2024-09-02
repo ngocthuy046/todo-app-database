@@ -17,7 +17,16 @@ const httpStatusCode = Object.freeze({
 	GATEWAY_TIMEOUT: 504,
 	HTTP_VERSION_NOT_SUPPORTED: 505,
 });
+const METHODS = Object.freeze({
+	PUT: 'PUT',
+	GET: 'GET',
+	POST: 'POST',
+	PATCH: 'PATCH',
+	DELETE: 'DELETE',
+	OPTIONS: 'OPTIONS',
+});
 
 module.exports = {
 	httpStatusCode,
+	METHODS,
 };

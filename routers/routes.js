@@ -7,6 +7,9 @@ module.exports = {
 		userLogout: {
 			value: '/api/users/logout',
 		},
+		checkToken: {
+			value: '/api/users/check-token',
+		},
 	},
 
 	task: {

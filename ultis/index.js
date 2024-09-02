@@ -1,11 +1,11 @@
 const fs = require('fs');
 const { httpStatusCode } = require('../constants.js');
 
-const writeDataToFile = (fileName, data) => {
+function writeDataToFile(fileName, data) {
 	fs.writeFileSync(fileName, data, 'utf-8', (error) => console.log(error));
-};
+}
 
-const getDataFromRequest = (req) => {
+function getDataFromRequest(request) {
 	return new Promise((resolve, reject) => {
 		let body = '';
 		req.on('data', (chunk) => {
@@ -15,13 +15,13 @@ const getDataFromRequest = (req) => {
 			resolve(JSON.parse(body));
 		});
 	});
-};
+}
 
-const generateUID = () => {
+function generateUID() {
 	return Date.now().toString(36) + Math.random().toString(36).substring(2, 11);
-};
+}
 
-const checkAuthorizationHeaders = (request) => {
+function checkAuthorizationHeaders(request) {
 	const token = request.headers['authorization'];
 	if (!token) {
 		response.writeHead(httpStatusCode.UNAUTHORIZED, {
@@ -31,23 +31,9 @@ const checkAuthorizationHeaders = (request) => {
 	} else {
 		return token;
 	}
-};
+}
 
-const getBodyDataRequest = async (request) => {
-	const body = await getDataFromRequest(request);
-	if (!body) {
-		response.writeHead(httpStatusCode.ERROR, {
-			'Content-Type': 'application/json',
-		});
-		response.end(
-			JSON.stringify({ message: 'No Data received to delete task' })
-		);
-	} else {
-		return body;
-	}
-};
-
-const handleMessage = (message) => {
+function handleMessage(message, response) {
 	if (message === 'Success') {
 		response.writeHead(httpStatusCode.NO_CONTENT, {
 			'Content-Type': 'application/json',
@@ -63,11 +49,36 @@ const handleMessage = (message) => {
 			'Content-Type': 'application/json',
 		});
 		response.end(JSON.stringify(message));
+	} else if (message === 'Logout success') {
+		response.writeHead(httpStatusCode.NO_CONTENT, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(message));
+	} else if (message === 'Register success') {
+		response.writeHead(httpStatusCode.CREATED, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(message));
+	} else if (message === 'Delete task success') {
+		response.writeHead(httpStatusCode.NO_CONTENT, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(message));
+	} else if (message === 'Delete all tasks success') {
+		response.writeHead(httpStatusCode.NO_CONTENT, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(message));
+	} else if (message === 'User not found') {
+		response.writeHead(httpStatusCode.NOT_FOUND, {
+			'Content-Type': 'application/json',
+		});
+		response.end(JSON.stringify(message));
 	}
-};
+}
 
 module.exports = {
-	getBodyDataRequest,
+	getDataFromRequest,
 	generateUID,
 	writeDataToFile,
 	checkAuthorizationHeaders,
