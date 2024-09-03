@@ -1,8 +1,11 @@
 const { METHODS } = require('../constants');
-
+const url = require('url');
 const routerMethods = Object.freeze({
 	get: function (request, response, path, callback) {
-		if (path === request.url && request.method === METHODS.GET) {
+		if (
+			path === url.parse(request.url, true).pathname &&
+			request.method === METHODS.GET
+		) {
 			callback(request, response);
 		}
 	},

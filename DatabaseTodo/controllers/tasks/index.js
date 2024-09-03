@@ -1,10 +1,10 @@
 const {
 	addNewTaskModel,
-	getAllTasksModel,
 	deleteTaskModel,
 	deleteAllTasksModel,
 	editTaskModel,
 	toggleTaskModel,
+	getAllTasksByIdModel,
 } = require('../../models/taskModel.js');
 const { getDataFromRequest, handleMessage } = require('../../ultis/index.js');
 const { httpStatusCode } = require('../../constants.js');
@@ -15,9 +15,9 @@ async function addTask(request, response) {
 	handleMessage(message, response);
 }
 
-async function getAllTasks(request, response) {
-	const body = await getDataFromRequest(request);
-	const taskList = await getAllTasksModel(body);
+async function getAllTasksById(request, response) {
+	const id = request.url.split('?id=')[1];
+	const taskList = await getAllTasksByIdModel(id);
 	if (taskList) {
 		response.writeHead(httpStatusCode.OK, {
 			'Content-Type': 'application/json',
@@ -27,7 +27,7 @@ async function getAllTasks(request, response) {
 		response.writeHead(httpStatusCode.NOT_FOUND, {
 			'Content-Type': 'application/json',
 		});
-		response.end(JSON.stringify('Error'));
+		response.end(JSON.stringify('Task not found'));
 	}
 }
 
@@ -57,7 +57,7 @@ async function toggleTask(request, response) {
 
 module.exports = {
 	addTask,
-	getAllTasks,
+	getAllTasksById,
 	deleteTask,
 	editTask,
 	toggleTask,

@@ -18,9 +18,9 @@ function addNewTaskModel(data) {
 	});
 }
 
-function getAllTasksModel(data) {
+function getAllTasksByIdModel(id) {
 	return new Promise((resolve, reject) => {
-		const taskList = tasks.filter((task) => task.user_id === data.user_id);
+		const taskList = tasks.filter((task) => task.user_id === id);
 		if (taskList) {
 			resolve(taskList);
 		} else {
@@ -52,10 +52,15 @@ function deleteAllTasksModel(data) {
 		const updatedlistTasks = tasks.filter(
 			(task) => task.user_id !== data.user_id
 		);
-		tasks = updatedlistTasks;
-		writeDataToFile('./database/todoTask.json', JSON.stringify(tasks));
-		message = 'Delete all tasks success';
-		resolve(message);
+		if (updatedlistTasks) {
+			tasks = updatedlistTasks;
+			writeDataToFile('./database/todoTask.json', JSON.stringify(tasks));
+			message = 'Delete all tasks success';
+			resolve(message);
+		} else {
+			message = 'Task not found';
+			resolve(message);
+		}
 	});
 }
 
@@ -66,7 +71,7 @@ function editTaskModel(data) {
 		if (task) {
 			task.name = data.name;
 			writeDataToFile('./database/todoTask.json', JSON.stringify(tasks));
-			message = 'Edit Task success';
+			message = 'Edit task success';
 			resolve(message);
 		} else {
 			message = 'Task not found';
@@ -93,9 +98,9 @@ function toggleTaskModel(data) {
 
 module.exports = {
 	addNewTaskModel,
-	getAllTasksModel,
 	deleteTaskModel,
 	deleteAllTasksModel,
 	editTaskModel,
 	toggleTaskModel,
+	getAllTasksByIdModel,
 };

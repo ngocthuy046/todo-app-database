@@ -1,28 +1,37 @@
+const url = require('url');
 const { METHODS } = require('../constants');
 const routerMethods = Object.freeze({
-	get: function (req, res, path, callback) {
-		if (path === req.url && req.method === METHODS.GET) {
-			callback(req, res);
+	get: function (request, response, path, callback) {
+		if (
+			path === url.parse(request.url, true).pathname &&
+			request.method === METHODS.GET
+		) {
+			callback(request, response);
 		}
 	},
-	post: function (req, res, path, callback) {
-		if (path === req.url && req.method === METHODS.POST) {
-			callback(req, res);
+	post: function (request, response, path, callback) {
+		if (path === request.url && request.method === METHODS.POST) {
+			callback(request, response);
 		}
 	},
-	put: function (req, res, path, callback) {
-		if (path === req.url && req.method === METHODS.PUT) {
-			callback(req, res);
+	put: function (request, response, path, callback) {
+		if (path === request.url && request.method === METHODS.PUT) {
+			callback(request, response);
 		}
 	},
-	delete: function (req, res, path, callback) {
-		if (path === req.url && req.method === METHODS.DELETE) {
-			callback(req, res);
+	patch: function (request, response, path, callback) {
+		if (path === request.url && request.method === METHODS.PATCH) {
+			callback(request, response);
 		}
 	},
-	options: function (req, res, path, callback) {
-		if (path === req.url && req.method === METHODS.OPTIONS) {
-			callback(req, res);
+	delete: function (request, response, path, callback) {
+		if (path === request.url && request.method === METHODS.DELETE) {
+			callback(request, response);
+		}
+	},
+	options: function (request, response, path, callback) {
+		if (path === request.url && request.method === METHODS.OPTIONS) {
+			callback(request, response);
 		}
 	},
 });

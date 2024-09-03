@@ -20,8 +20,5 @@ module.exports = {
 		deleteAllTasks: {
 			value: '/api/tasks/delete-all-tasks',
 		},
-		getAllTasks: {
-			value: '/api/tasks/get-all-tasks',
-		},
 	},
 };
