@@ -3,6 +3,7 @@ const {
 	loginUserModel,
 	logoutUserModel,
 	checkToken,
+	addUserModel,
 } = require('../../models/usersModel.js');
 const {
 	getDataFromRequest,
@@ -13,7 +14,7 @@ const {
 async function getUsers(request, response) {}
 async function addUser(request, response) {
 	const body = await getDataFromRequest(request);
-	const message = await addUser(body);
+	const message = await addUserModel(body);
 	handleMessage(message, response);
 }
 
@@ -37,7 +38,6 @@ async function checkTokenIsValid(request, response) {
 async function loginUser(request, response) {
 	const body = await getDataFromRequest(request);
 	const message = await loginUserModel(body);
-	// message = user
 	if (message !== 'User not found') {
 		response.writeHead(httpStatusCode.OK, {
 			'Content-Type': 'application/json',

@@ -40,7 +40,7 @@ async function loginUser(request, response) {
 	}
 }
 
-const logoutUser = async (request, response) => {
+async function logoutUser(request, response) {
 	const body = await getDataFromRequest(request);
 	const result = await fetch(`${urlAPI}/api/users/logout`, {
 		method: 'DELETE',
@@ -54,7 +54,7 @@ const logoutUser = async (request, response) => {
 		});
 		response.end(JSON.stringify(await result.json()));
 	}
-};
+}
 
 module.exports = {
 	getUsers,

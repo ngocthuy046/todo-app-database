@@ -1,5 +1,5 @@
-let routerMethods = require('../methods.js');
-let routes = require('../routes.js');
+const routerMethods = require('../methods.js');
+const routes = require('../routes.js');
 const {
 	getUsers,
 	addUser,
@@ -7,7 +7,7 @@ const {
 	logoutUser,
 } = require('../../controller/users/index.js');
 
-let userRouter = {
+const userRouter = {
 	run(request, response) {
 		routerMethods.get(request, response, routes.user.value, getUsers);
 		routerMethods.post(

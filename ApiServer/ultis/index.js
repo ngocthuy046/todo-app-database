@@ -1,5 +1,5 @@
 const { httpStatusCode } = require('../constants');
-const getDataFromRequest = (request) => {
+function getDataFromRequest(request) {
 	return new Promise((resolve, reject) => {
 		let body = '';
 		request.on('data', (chunk) => {
@@ -9,7 +9,7 @@ const getDataFromRequest = (request) => {
 			resolve(JSON.parse(body));
 		});
 	});
-};
+}
 
 function handleMessage(message, response) {
 	if (message === 'Success') {
@@ -75,9 +75,9 @@ function handleMessage(message, response) {
 	}
 }
 
-const generateUID = () => {
+function generateUID() {
 	return Date.now().toString(36) + Math.random().toString(36).substring(2, 11);
-};
+}
 function checkAuthorizationHeaders(request, response) {
 	const token = request.headers['authorization'];
 	if (!token) {

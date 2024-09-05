@@ -11,7 +11,6 @@ module.exports = {
 			value: '/api/users/check-token',
 		},
 	},
-
 	task: {
 		value: '/api/tasks',
 		toggleTask: {

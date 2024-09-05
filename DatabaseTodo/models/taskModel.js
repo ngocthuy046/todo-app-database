@@ -49,11 +49,11 @@ function deleteTaskModel(data) {
 function deleteAllTasksModel(data) {
 	return new Promise((resolve, reject) => {
 		let message;
-		const updatedlistTasks = tasks.filter(
+		const updatedTaskList = tasks.filter(
 			(task) => task.user_id !== data.user_id
 		);
-		if (updatedlistTasks) {
-			tasks = updatedlistTasks;
+		if (updatedTaskList) {
+			tasks = updatedTaskList;
 			writeDataToFile('./database/todoTask.json', JSON.stringify(tasks));
 			message = 'Delete all tasks success';
 			resolve(message);

@@ -1,6 +1,6 @@
-var routerMethods = require('../methods.js');
+const routerMethods = require('../methods.js');
 
-var routes = require('../routes.js');
+const routes = require('../routes.js');
 const {
 	addTask,
 	deleteTask,
@@ -9,10 +9,9 @@ const {
 	toggleTask,
 	getAllTasksById,
 } = require('../../controller/tasks/index.js');
-let taskRouter = {
+const taskRouter = {
 	run(request, response) {
 		routerMethods.get(request, response, routes.task.value, getAllTasksById);
-
 		routerMethods.post(request, response, routes.task.value, addTask);
 		routerMethods.delete(request, response, routes.task.value, deleteTask);
 		routerMethods.delete(
